@@ -1,0 +1,509 @@
+import { useState } from "react";
+
+const drivers = [
+  {
+    initials: "C",
+    name: "Carlos Muñoz",
+    type: "motocarro",
+    vehicle: "MotoCarro · ABC-123",
+    license: "MotoCarro - ABC-123",
+    rating: "4.8",
+    zone: "7 de Agosto",
+    status: "Disponible",
+  },
+  {
+    initials: "M",
+    name: "María López",
+    type: "moto",
+    vehicle: "moto · DEF-456",
+    license: "moto - DEF-456",
+    rating: "4.9",
+    zone: "Piedras Blancas",
+    status: "Disponible",
+  },
+  {
+    initials: "J",
+    name: "José Restrepo",
+    type: "moto",
+    vehicle: "moto · GHI-789",
+    license: "moto - GHI-789",
+    rating: "4.7",
+    zone: "Santa Bárbara",
+    status: "Disponible",
+  },
+  {
+    initials: "A",
+    name: "Ana García",
+    type: "motocarro",
+    vehicle: "motocarro · JKL-012",
+    license: "motocarro - JKL-012",
+    rating: "5.0",
+    zone: "7 de Agosto",
+    status: "Disponible",
+  },
+];
+
+const valores = [
+  {
+    icon: "⚡",
+    title: "Rápido y fácil",
+    description:
+      "Encuentra conductores disponibles en tu zona en segundos. Sin complicaciones.",
+  },
+  {
+    icon: "🛡️",
+    title: "Seguro y confiable",
+    description:
+      "Todos los conductores están verificados. Viaja tranquilo por Remedios.",
+  },
+  {
+    icon: "🤝",
+    title: "Proyecto comunitario",
+    description:
+      "Facilitamos el transporte urbano conectando usuarios y conductores de forma accesible.",
+  },
+];
+
+const team = [
+  { initials: "SR", name: "Stefania Rojo", role: "Desarrolladora" },
+  { initials: "MA", name: "Mariana Alvarez", role: "Desarrolladora" },
+  { initials: "RT", name: "Richard Tabares", role: "Instructor" },
+];
+
+const zonas = ["Piedras Blancas", "Santa Bárbara", "7 de Agosto"];
+
+function Inicio() {
+  const [vehicleType, setVehicleType] = useState("moto");
+  const [zone, setZone] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const vehicleTypeMap = {
+    moto: "moto",
+    motocarro: "motocarro",
+  };
+
+  const updateResults = (selectedVehicle, selectedZone) => {
+    const filtered = drivers.filter(
+      (driver) =>
+        driver.status === "Disponible" &&
+        driver.type === selectedVehicle &&
+        (selectedZone === "" || driver.zone === selectedZone),
+    );
+    setSearchResults(filtered);
+  };
+
+  const handleVehicleChange = (type) => {
+    setVehicleType(type);
+  };
+
+  const handleZoneChange = (value) => {
+    setZone(value);
+  };
+
+  const handleSearch = () => {
+    if (!zone) {
+      setHasSearched(true);
+      setErrorMessage("Por favor selecciona una zona para buscar");
+      setSearchResults([]);
+      return;
+    }
+    setErrorMessage("");
+    setHasSearched(true);
+    updateResults(vehicleType, zone);
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900">
+      <header className="sticky top-0 z-50 border-b border-slate-800/30 bg-slate-900 shadow-sm">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-slate-800 shadow-sm">
+              <img
+                src="/logo.png"
+                alt="Tu Ruta Fácil"
+                className="h-full w-full object-contain"
+              />
+            </div>
+            <div>
+              <p className="text-base font-bold text-slate-100">
+                Tu Ruta Fácil
+              </p>
+              <p className="text-xs text-slate-300">
+                Encuentra tu conductor en segundos
+              </p>
+            </div>
+          </div>
+          <nav className="hidden items-center gap-3 md:flex">
+            <a
+              href="#inicio"
+              className="rounded-2xl px-3 py-2 text-sm font-medium text-slate-100 transition duration-200 hover:bg-orange-500/15 hover:text-orange-100"
+            >
+              Inicio
+            </a>
+            <a
+              href="#contacto"
+              className="rounded-2xl px-3 py-2 text-sm font-medium text-slate-100 transition duration-200 hover:bg-orange-500/15 hover:text-orange-100"
+            >
+              Contacto
+            </a>
+            <a
+              href="#acerca"
+              className="rounded-2xl px-3 py-2 text-sm font-medium text-slate-100 transition duration-200 hover:bg-orange-500/15 hover:text-orange-100"
+            >
+              Acerca De
+            </a>
+          </nav>
+        </div>
+      </header>
+
+      <main className="space-y-20">
+        <section id="inicio" className="relative overflow-hidden min-h-[80vh]">
+          <video
+            className="absolute inset-0 h-full w-full object-cover"
+            src="/fondo-remedios.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+          <div className="absolute inset-0 bg-linear-to-b from-black/30 via-black/10 to-black/70" />
+          <div className="mx-auto relative z-10 max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+            <div className="flex min-h-[62vh] flex-col items-center justify-center gap-10">
+              <div className="max-w-3xl text-center text-white">
+                <h1 className="text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
+                  Encuentra tu conductor
+                </h1>
+                <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-orange-100/90 sm:text-xl">
+                  Selecciona el tipo de vehículo y tu zona para encontrar
+                  conductores disponibles en tu comunidad de Remedios.
+                </p>
+              </div>
+              <div className="w-full max-w-xl rounded-4xl border border-white/15 bg-white/95 p-8 shadow-[0_40px_80px_-40px_rgba(15,23,42,0.45)] backdrop-blur-xl">
+                <div className="space-y-6">
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+                      Tipo de vehículo
+                    </p>
+                    <div className="mt-4 flex gap-3">
+                      {["moto", "motocarro"].map((type) => (
+                        <button
+                          key={type}
+                          type="button"
+                          onClick={() => handleVehicleChange(type)}
+                          className={`flex-1 rounded-2xl border px-4 py-4 text-left text-sm font-semibold transition ${
+                            vehicleType === type
+                              ? "border-orange-500 bg-orange-50 text-slate-900 shadow-sm"
+                              : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <span className="text-2xl">
+                              {type === "moto" ? "🏍️" : "🚚"}
+                            </span>
+                            <span className="uppercase">
+                              {type === "moto" ? "Moto" : "Motocarro"}
+                            </span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="zone"
+                      className="text-sm font-semibold text-slate-600"
+                    >
+                      Zona de recogida
+                    </label>
+                    <select
+                      id="zone"
+                      value={zone}
+                      onChange={(event) => handleZoneChange(event.target.value)}
+                      className="mt-3 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+                    >
+                      <option value="">Selecciona tu zona...</option>
+                      {zonas.map((item) => (
+                        <option key={item} value={item}>
+                          {item}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {hasSearched && (
+                    <div className={`rounded-3xl border p-5 ${
+                      errorMessage
+                        ? "border-red-200 bg-red-50"
+                        : "border-slate-200 bg-slate-50"
+                    }`}>
+                      <p className={`text-sm font-semibold uppercase tracking-[0.22em] ${
+                        errorMessage ? "text-red-600" : "text-slate-500"
+                      }`}>
+                        {errorMessage ? "Error de búsqueda" : "Conductores disponibles"}
+                      </p>
+                      <p className={`mt-2 text-lg font-semibold ${
+                        errorMessage ? "text-red-700" : "text-slate-900"
+                      }`}>
+                        {errorMessage || (searchResults.length > 0
+                          ? `${searchResults.length} conductor${searchResults.length === 1 ? "" : "es"} en ${zone}`
+                          : `No hay conductores disponibles en ${zone}`)}
+                      </p>
+                      {searchResults.length > 0 && (
+                        <div className="mt-4 space-y-3">
+                          {searchResults.map((driver) => (
+                            <div
+                              key={driver.name}
+                              className="rounded-2xl bg-white p-4 shadow-sm"
+                            >
+                              <div className="flex items-center justify-between gap-3">
+                                <p className="font-semibold text-slate-900">
+                                  {driver.name}
+                                </p>
+                                <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                                  {driver.status}
+                                </span>
+                              </div>
+                              <p className="mt-2 text-sm text-slate-500">
+                                {driver.vehicle}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  <button
+                    onClick={handleSearch}
+                    className="w-full rounded-2xl bg-orange-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-500/20 transition hover:bg-orange-600"
+                  >
+                    Buscar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-slate-100 py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-500">
+                ¿Por qué Tu Ruta Fácil?
+              </p>
+              <h2 className="mt-3 text-3xl font-bold text-slate-900">
+                Propuesta clara para tu viaje
+              </h2>
+            </div>
+            <div className="mt-10 grid gap-6 lg:grid-cols-3">
+              {valores.map((item) => (
+                <div
+                  key={item.title}
+                  className="rounded-[28px] border border-slate-200 bg-white p-8 text-center shadow-sm"
+                >
+                  <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-50 text-2xl text-orange-500">
+                    {item.icon}
+                  </div>
+                  <h3 className="text-xl font-semibold text-slate-900">
+                    {item.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-600">
+                    {item.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="acerca" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-8 lg:grid-cols-[1.2fr,0.8fr] lg:items-start">
+            <div className="space-y-6 rounded-4xl bg-white p-8 shadow-sm">
+              <div className="space-y-4">
+                <div className="rounded-[28px] border border-slate-200 bg-linear-to-br from-orange-50/95 via-white to-slate-50 p-6 shadow-sm ring-1 ring-orange-50">
+                  <div className="mb-5 flex items-center gap-3">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-100 text-orange-600 shadow-sm">
+                      🎯
+                    </div>
+                    <p className="font-semibold text-slate-900">Nuestra Misión</p>
+                  </div>
+                  <p className="mt-3 text-sm text-slate-600">
+                    Facilitar el transporte urbano en Remedios, Antioquia,
+                    conectando pasajeros con conductores verificados de manera
+                    rápida, segura y accesible para toda la comunidad.
+                  </p>
+                </div>
+                <div className="rounded-[28px] border border-slate-200 bg-linear-to-br from-slate-50 via-white to-orange-50/80 p-6 shadow-sm ring-1 ring-orange-50/30">
+                  <div className="mb-5 flex items-center gap-3">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-100 text-amber-600 shadow-sm">
+                      🔭
+                    </div>
+                    <p className="font-semibold text-slate-900">Nuestra Visión</p>
+                  </div>
+                  <p className="mt-3 text-sm text-slate-600">
+                    Ser la plataforma de transporte comunitario referente en los
+                    municipios de Antioquia, promoviendo la movilidad eficiente
+                    y la economía local.
+                  </p>
+                </div>
+              </div>
+              <div className="rounded-4xl border border-slate-200 bg-slate-50 p-6">
+                <p className="text-center text-base font-semibold uppercase tracking-[0.2em] text-slate-500">
+                  Nuestros Valores
+                </p>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  {valores.map((item) => (
+                    <div
+                      key={item.title}
+                      className="rounded-3xl bg-white p-5 text-center shadow-sm"
+                    >
+                      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-orange-500">
+                        {item.icon}
+                      </div>
+                      <p className="mt-4 font-semibold text-slate-900">
+                        {item.title}
+                      </p>
+                      <p className="mt-2 text-sm text-slate-600">
+                        {item.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div className="rounded-4xl border border-slate-200 bg-white p-8 shadow-sm">
+                <p className="text-base font-semibold text-slate-900">
+                  Nuestro Equipo
+                </p>
+                <div className="mt-6 grid gap-4 sm:grid-cols-3">
+                  {team.map((member) => (
+                    <div
+                      key={member.name}
+                      className="rounded-3xl bg-slate-50 p-5 text-center shadow-sm"
+                    >
+                      <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-orange-500 text-lg font-bold text-white">
+                        {member.initials}
+                      </div>
+                      <p className="font-semibold text-slate-900">
+                        {member.name}
+                      </p>
+                      <p className="mt-1 text-sm text-slate-500">
+                        {member.role}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="rounded-4xl border border-slate-200 bg-slate-50 p-8 text-center">
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+                  Tu Ruta Fácil
+                </p>
+                <p className="mt-4 text-sm text-slate-600">
+                  Proyecto académico – Remedios 2026
+                </p>
+                <p className="mt-1 text-sm text-slate-600">
+                  © Todos los derechos reservados
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="contacto" className="bg-slate-900 text-slate-100">
+          <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+            <div className="rounded-4xl border border-white/10 bg-white/5 p-8 shadow-[0_40px_100px_-60px_rgba(15,23,42,0.5)]">
+              <div className="mb-10 text-center">
+                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-orange-200">
+                  Contáctanos
+                </p>
+                <h2 className="mt-3 text-3xl font-bold text-white">
+                  Estamos aquí para ayudarte
+                </h2>
+                <p className="mt-3 text-sm text-slate-300">
+                  Escríbenos y un equipo local responderá tus dudas sobre rutas
+                  y conductores.
+                </p>
+              </div>
+              <div className="grid gap-8 lg:grid-cols-[0.95fr,1.05fr]">
+                <div className="space-y-4 rounded-[28px] bg-slate-950/90 p-6">
+                  <div className="rounded-3xl bg-slate-900 p-5 shadow-sm">
+                    <p className="font-semibold text-slate-100">Teléfono</p>
+                    <p className="mt-2 text-sm text-slate-400">
+                      +57 312 345 6789
+                    </p>
+                  </div>
+                  <div className="rounded-3xl bg-slate-900 p-5 shadow-sm">
+                    <p className="font-semibold text-slate-100">Correo</p>
+                    <p className="mt-2 text-sm text-slate-400">
+                      contacto@turutafacil.com
+                    </p>
+                  </div>
+                  <div className="rounded-3xl bg-slate-900 p-5 shadow-sm">
+                    <p className="font-semibold text-slate-100">Ubicación</p>
+                    <p className="mt-2 text-sm text-slate-400">
+                      Remedios, Antioquia, Colombia
+                    </p>
+                  </div>
+                  <div className="rounded-3xl bg-slate-900 p-5 shadow-sm">
+                    <p className="font-semibold text-slate-100">Horario</p>
+                    <p className="mt-2 text-sm text-slate-400">
+                      Lunes a Sábado · 6:00 AM - 8:00 PM
+                    </p>
+                  </div>
+                  <button className="mt-4 w-full rounded-2xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">
+                    Escríbenos por WhatsApp
+                  </button>
+                </div>
+                <form className="space-y-4 rounded-[28px] bg-slate-950/90 p-6">
+                  <div>
+                    <label className="mb-2 block text-sm font-semibold text-slate-200">
+                      Nombre
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Tu nombre completo"
+                      className="w-full rounded-2xl border border-slate-700 bg-slate-900/90 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-300/30"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-2 block text-sm font-semibold text-slate-200">
+                      Correo
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="correo@ejemplo.com"
+                      className="w-full rounded-2xl border border-slate-700 bg-slate-900/90 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-300/30"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-2 block text-sm font-semibold text-slate-200">
+                      Mensaje
+                    </label>
+                    <textarea
+                      rows="5"
+                      placeholder="¿En qué podemos ayudarte?"
+                      className="w-full rounded-2xl border border-slate-700 bg-slate-900/90 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-300/30"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="mt-4 w-full rounded-2xl bg-orange-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-orange-600"
+                  >
+                    Enviar Mensaje
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}
+
+export default Inicio;

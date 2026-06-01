@@ -234,44 +234,108 @@ function Inicio() {
                   </div>
 
                   {hasSearched && (
-                    <div className={`rounded-3xl border p-5 ${
+                    <div className={`rounded-3xl border p-6 transition-all duration-500 animate-in fade-in slide-in-from-bottom-4 ${
                       errorMessage
                         ? "border-red-200 bg-red-50"
-                        : "border-slate-200 bg-slate-50"
+                        : "border-slate-200 bg-gradient-to-br from-slate-50 to-white"
                     }`}>
                       <p className={`text-sm font-semibold uppercase tracking-[0.22em] ${
                         errorMessage ? "text-red-600" : "text-slate-500"
                       }`}>
-                        {errorMessage ? "Error de búsqueda" : "Conductores disponibles"}
+                        {errorMessage ? "Error de búsqueda" : "Resultados disponibles"}
                       </p>
-                      <p className={`mt-2 text-lg font-semibold ${
-                        errorMessage ? "text-red-700" : "text-slate-900"
-                      }`}>
-                        {errorMessage || (searchResults.length > 0
-                          ? `${searchResults.length} conductor${searchResults.length === 1 ? "" : "es"} en ${zone}`
-                          : `No hay conductores disponibles en ${zone}`)}
-                      </p>
-                      {searchResults.length > 0 && (
-                        <div className="mt-4 space-y-3">
-                          {searchResults.map((driver) => (
-                            <div
-                              key={driver.name}
-                              className="rounded-2xl bg-white p-4 shadow-sm"
-                            >
-                              <div className="flex items-center justify-between gap-3">
-                                <p className="font-semibold text-slate-900">
-                                  {driver.name}
-                                </p>
-                                <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
-                                  {driver.status}
-                                </span>
-                              </div>
-                              <p className="mt-2 text-sm text-slate-500">
-                                {driver.vehicle}
+                      
+                      {errorMessage ? (
+                        <p className="mt-2 text-lg font-semibold text-red-700">
+                          {errorMessage}
+                        </p>
+                      ) : (
+                        <>
+                          {/* Tarjeta de Contador */}
+                          <div className="mt-4 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 p-4 shadow-lg shadow-orange-500/20">
+                            <p className="text-sm text-orange-50">Conductores disponibles en {zone}</p>
+                            <p className="mt-1 text-3xl font-bold text-white">
+                              {searchResults.length}
+                            </p>
+                          </div>
+
+                          {/* Lista de Conductores */}
+                          {searchResults.length > 0 ? (
+                            <div className="mt-6 space-y-3">
+                              {searchResults.map((driver, index) => (
+                                <div
+                                  key={driver.name}
+                                  className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-orange-300 hover:scale-[1.02] cursor-pointer animate-in fade-in slide-in-from-left-4"
+                                  style={{
+                                    animationDelay: `${index * 100}ms`,
+                                    animationFillMode: "both",
+                                  }}
+                                >
+                                  <div className="flex items-start justify-between gap-4">
+                                    {/* Avatar y Info Principal */}
+                                    <div className="flex flex-1 items-start gap-4">
+                                      {/* Avatar */}
+                                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-orange-600 text-lg font-bold text-white shadow-md transition-transform duration-300 group-hover:scale-110">
+                                        {driver.initials}
+                                      </div>
+
+                                      {/* Información del Conductor */}
+                                      <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-2">
+                                          <p className="font-semibold text-slate-900">
+                                            {driver.name}
+                                          </p>
+                                          <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-50 px-2 py-1 text-xs font-semibold text-amber-700">
+                                            <span>⭐</span>
+                                            <span>{driver.rating}</span>
+                                          </span>
+                                        </div>
+
+                                        {/* Vehículo */}
+                                        <div className="mt-2 flex items-center gap-2 text-sm text-slate-600">
+                                          <span className="text-lg">
+                                            {driver.type === "moto" ? "🏍️" : "🚚"}
+                                          </span>
+                                          <span>{driver.vehicle}</span>
+                                        </div>
+
+                                        {/* Ubicación */}
+                                        <div className="mt-1 flex items-center gap-2 text-sm text-slate-600">
+                                          <span className="text-lg">📍</span>
+                                          <span>{driver.zone}</span>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Estado Disponible */}
+                                    <div className="flex shrink-0 items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-2 text-xs font-semibold text-emerald-700 shadow-sm">
+                                      <span className="text-lg">✅</span>
+                                      <span>{driver.status}</span>
+                                    </div>
+                                  </div>
+
+                                  {/* Línea divisoria sutil */}
+                                  <div className="mt-4 border-t border-slate-100" />
+
+                                  {/* CTA Button */}
+                                  <button className="mt-4 w-full rounded-xl bg-orange-500 py-2 text-sm font-semibold text-white shadow-md shadow-orange-500/20 transition-all duration-200 hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-500/30 active:scale-95">
+                                    Solicitar viaje
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="mt-6 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
+                              <p className="text-3xl">😕</p>
+                              <p className="mt-3 text-sm font-semibold text-slate-600">
+                                No encontramos conductores disponibles en esta zona.
+                              </p>
+                              <p className="mt-1 text-sm text-slate-500">
+                                Intenta nuevamente más tarde o selecciona otra zona.
                               </p>
                             </div>
-                          ))}
-                        </div>
+                          )}
+                        </>
                       )}
                     </div>
                   )}

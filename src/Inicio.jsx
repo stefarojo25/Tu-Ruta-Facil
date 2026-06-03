@@ -12,6 +12,8 @@ const drivers = [
     zone: "7 de Agosto",
     status: "Disponible",
     telefono: "+573123456789",
+    horarioInicio: "7:00 PM",
+    horarioFin: "6:00 AM",
   },
   {
     initials: "M",
@@ -23,6 +25,8 @@ const drivers = [
     zone: "Piedras Blancas",
     status: "Disponible",
     telefono: "+573123456789",
+    horarioInicio: "06:00 AM",
+    horarioFin: "08:00 PM",
   },
   {
     initials: "J",
@@ -34,6 +38,8 @@ const drivers = [
     zone: "Santa Bárbara",
     status: "Disponible",
     telefono: "+573123456789",
+    horarioInicio: "07:00 AM",
+    horarioFin: "07:00 PM",
   },
   {
     initials: "A",
@@ -45,6 +51,8 @@ const drivers = [
     zone: "7 de Agosto",
     status: "Disponible",
     telefono: "+573123456789",
+    horarioInicio: "08:00 AM",
+    horarioFin: "06:00 PM",
   },
 ];
 
@@ -77,6 +85,62 @@ const team = [
 
 const zonas = ["Piedras Blancas", "Santa Bárbara", "7 de Agosto"];
 
+// Convierte un horario en formato 12h (ej. "7:00 PM", "06:00 AM") a minutos desde medianoche
+const parseTime12ToMinutes = (time12) => {
+  if (!time12 || typeof time12 !== "string") return NaN;
+  const t = time12.trim();
+  // RegExp para capturar hora, minutos y meridiano opcional
+  const m = t.match(/^(\d{1,2}):(\d{2})\s*([AaPp][Mm])?$/);
+  if (!m) {
+    // Intentar interpretar como 24h "HH:MM"
+    const m24 = t.match(/^(\d{1,2}):(\d{2})$/);
+    if (!m24) return NaN;
+    const h24 = Number(m24[1]);
+    const min24 = Number(m24[2]);
+    return h24 * 60 + min24;
+  }
+
+  let hours = Number(m[1]);
+  const minutes = Number(m[2]);
+  const meridiem = m[3] ? m[3].toUpperCase() : null;
+
+  if (meridiem === "AM") {
+    if (hours === 12) hours = 0;
+  } else if (meridiem === "PM") {
+    if (hours !== 12) hours = hours + 12;
+  }
+
+  return hours * 60 + minutes;
+};
+
+// Valida si la hora actual (o una hora dada) está dentro del rango laboral
+const isDriverWithinSchedule = (horarioInicio, horarioFin, now = new Date()) => {
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+  const startMinutes = parseTime12ToMinutes(horarioInicio);
+  const endMinutes = parseTime12ToMinutes(horarioFin);
+
+  if (Number.isNaN(startMinutes) || Number.isNaN(endMinutes)) return false;
+
+  // Si el horario cruza medianoche (ej: 19:00 -> 06:00)
+  if (startMinutes > endMinutes) {
+    return currentMinutes >= startMinutes || currentMinutes < endMinutes;
+  }
+
+  // Horario normal dentro del mismo día
+  return currentMinutes >= startMinutes && currentMinutes < endMinutes;
+};
+
+// Función para obtener la hora actual formateada
+const getCurrentTimeFormatted = () => {
+  const now = new Date();
+  return now.toLocaleTimeString("es-ES", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+};
+
 function Inicio() {
   const [vehicleType, setVehicleType] = useState("moto");
   const [zone, setZone] = useState("");
@@ -84,6 +148,7 @@ function Inicio() {
   const [hasSearched, setHasSearched] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [openContactIndex, setOpenContactIndex] = useState(-1);
+  const [currentTime, setCurrentTime] = useState(getCurrentTimeFormatted());
 
   // Estados del formulario de contacto
   const [formData, setFormData] = useState({
@@ -101,6 +166,14 @@ function Inicio() {
     emailjs.init("bgu3UATObJwJcrdwy");
   }, []);
 
+  // Actualizar hora actual cada minuto
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(getCurrentTimeFormatted());
+    }, 60000); // Actualizar cada minuto
+    return () => clearInterval(timer);
+  }, []);
+
   const vehicleTypeMap = {
     moto: "moto",
     motocarro: "motocarro",
@@ -111,7 +184,8 @@ function Inicio() {
       (driver) =>
         driver.status === "Disponible" &&
         driver.type === selectedVehicle &&
-        (selectedZone === "" || driver.zone === selectedZone),
+        (selectedZone === "" || driver.zone === selectedZone) &&
+        isDriverWithinSchedule(driver.horarioInicio, driver.horarioFin),
     );
     setSearchResults(filtered);
   };
@@ -406,13 +480,24 @@ function Inicio() {
                                           <span className="text-lg">📍</span>
                                           <span>{driver.zone}</span>
                                         </div>
+
+                                        {/* Horario Laboral */}
+                                        <div className="mt-2 flex items-center gap-2 text-sm text-slate-600">
+                                          <span className="text-lg">🕒</span>
+                                          <span>
+                                            {driver.horarioInicio} - {driver.horarioFin}
+                                          </span>
+                                        </div>
                                       </div>
                                     </div>
 
-                                    {/* Estado Disponible */}
-                                    <div className="flex shrink-0 items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-2 text-xs font-semibold text-emerald-700 shadow-sm">
-                                      <span className="text-lg">✅</span>
-                                      <span>{driver.status}</span>
+                                    {/* Estado Disponible + Indicador */}
+                                    <div className="flex shrink-0 flex-col items-end gap-2">
+                                      <div className="flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-2 text-xs font-semibold text-emerald-700 shadow-sm">
+                                        <span className="text-lg">✅</span>
+                                        <span>{driver.status}</span>
+                                      </div>
+                                     
                                     </div>
                                   </div>
 
@@ -467,12 +552,13 @@ function Inicio() {
                             <div className="mt-6 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
                               <p className="text-3xl">😕</p>
                               <p className="mt-3 text-sm font-semibold text-slate-600">
-                                No encontramos conductores disponibles en esta
-                                zona.
+                                Actualmente no hay conductores disponibles en esta zona dentro del horario de servicio.
                               </p>
                               <p className="mt-1 text-sm text-slate-500">
-                                Intenta nuevamente más tarde o selecciona otra
-                                zona.
+                                Hora actual: <span className="font-semibold text-slate-600">{currentTime}</span>
+                              </p>
+                              <p className="mt-2 text-xs text-slate-500">
+                                Intenta nuevamente más tarde o selecciona otra zona.
                               </p>
                             </div>
                           )}

@@ -3,57 +3,114 @@ import emailjs from "@emailjs/browser";
 
 const drivers = [
   {
-    initials: "C",
-    name: "Carlos Muñoz",
+    initials: "F",
+    name: "Fernando",
     type: "motocarro",
-    vehicle: "MotoCarro · ABC-123",
-    license: "MotoCarro - ABC-123",
+    vehicle: "MotoCarro · DEF456",
     rating: "4.8",
-    zone: "7 de Agosto",
+    zone: "Piedras Blancas",
     status: "Disponible",
-    telefono: "+573123456789",
-    horarioInicio: "7:00 PM",
-    horarioFin: "6:00 AM",
+    telefono: "+573138963178",
+    horarioInicio: "7:00 AM",
+    horarioFin: "6:00 PM",
   },
   {
-    initials: "M",
-    name: "María López",
-    type: "moto",
-    vehicle: "moto · DEF-456",
-    license: "moto - DEF-456",
+    initials: "F",
+    name: "Faber",
+    type: "motocarro",
+    vehicle: "MotoCarro· BCD890",
     rating: "4.9",
     zone: "Piedras Blancas",
     status: "Disponible",
-    telefono: "+573123456789",
+    telefono: "+573148547877",
     horarioInicio: "06:00 AM",
     horarioFin: "08:00 PM",
   },
   {
-    initials: "J",
-    name: "José Restrepo",
-    type: "moto",
-    vehicle: "moto · GHI-789",
-    license: "moto - GHI-789",
+    initials: "G",
+    name: "Gonzalo",
+    type: "motocarro",
+    vehicle: "MotoCarro · GHI-789",
     rating: "4.7",
-    zone: "Santa Bárbara",
+    zone: "Piedras Blancas",
     status: "Disponible",
-    telefono: "+573123456789",
+    telefono: "+573122951038",
     horarioInicio: "07:00 AM",
     horarioFin: "07:00 PM",
   },
   {
     initials: "A",
-    name: "Ana García",
+    name: "Alberto",
     type: "motocarro",
-    vehicle: "motocarro · JKL-012",
-    license: "motocarro - JKL-012",
+    vehicle: "MotoCarro · JKL-012",
     rating: "5.0",
-    zone: "7 de Agosto",
+    zone: "Piedras Blancas",
     status: "Disponible",
     telefono: "+573123456789",
     horarioInicio: "08:00 AM",
     horarioFin: "06:00 PM",
   },
+   {
+    initials: "A",
+    name: "Alirio",
+    type: "motocarro",
+    vehicle: "MotoCarro · POL863",
+    rating: "5.0",
+    zone: "Piedras Blancas",
+    status: "Disponible",
+    telefono: "+573117958767",
+    horarioInicio: "08:00 AM",
+    horarioFin: "06:00 PM",
+  },
+     {
+    initials: "H",
+    name: "Hilmer",
+    type: "motocarro",
+    vehicle: "MotoCarro · KIE552",
+    rating: "5.0",
+    zone: "Piedras Blancas",
+    status: "Disponible",
+    telefono: "+573235744896",
+    horarioInicio: "08:00 AM",
+    horarioFin: "06:00 PM",
+  },
+     {
+    initials: "R",
+    name: "Robinson",
+    type: "motocarro",
+    vehicle: "MotoCarro · DER222",
+    rating: "5.0",
+    zone: "Piedras Blancas",
+    status: "Disponible",
+    telefono: "+573128506333",
+    horarioInicio: "08:00 AM",
+    horarioFin: "06:00 PM",
+  },
+   {
+    initials: "D",
+    name: "Dario",
+    type: "moto",
+    vehicle: "Moto · DER22F",
+    rating: "5.0",
+    zone: "7 de Agosto",
+    status: "Disponible",
+    telefono: "+573206271564",
+    horarioInicio: "08:00 AM",
+    horarioFin: "06:00 PM",
+  },
+  {
+    initials: "O",
+    name: "Oscar",
+    type: "moto",
+    vehicle: "Moto · DTI86F",
+    rating: "5.0",
+    zone: "Santa Bárbara",
+    status: "Disponible",
+    telefono: "+573127168553",
+    horarioInicio: "08:00 AM",
+    horarioFin: "06:00 PM",
+  },
+  
 ];
 
 const valores = [
@@ -160,6 +217,7 @@ function Inicio() {
   const [formStatus, setFormStatus] = useState(""); // "success" o "error"
   const [isSubmitting, setIsSubmitting] = useState(false);
   const formRef = useRef(null);
+  const hasInitializedRef = useRef(false);
 
   // Inicializar EmailJS
   useEffect(() => {
@@ -198,17 +256,23 @@ function Inicio() {
     setZone(value);
   };
 
-  const handleSearch = () => {
+  useEffect(() => {
+    if (!hasInitializedRef.current) {
+      hasInitializedRef.current = true;
+      return;
+    }
+
     if (!zone) {
       setHasSearched(true);
       setErrorMessage("Por favor selecciona una zona para buscar");
       setSearchResults([]);
       return;
     }
+
     setErrorMessage("");
     setHasSearched(true);
     updateResults(vehicleType, zone);
-  };
+  }, [vehicleType, zone]);
 
   // Funciones para el formulario de contacto
   const validateForm = () => {
@@ -567,12 +631,6 @@ function Inicio() {
                     </div>
                   )}
 
-                  <button
-                    onClick={handleSearch}
-                    className="w-full rounded-2xl bg-orange-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-500/20 transition hover:bg-orange-600"
-                  >
-                    Buscar
-                  </button>
                 </div>
               </div>
             </div>

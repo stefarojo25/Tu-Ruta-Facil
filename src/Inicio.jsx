@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import emailjs from "@emailjs/browser";
 
 const drivers = [
+  // contactos de conductores Motocarro/*
   {
     initials: "F",
     name: "Fernando",
@@ -16,7 +17,7 @@ const drivers = [
   },
   {
     initials: "F",
-    name: "Faber",
+    name: "Fabio",
     type: "motocarro",
     vehicle: "MotoCarro· BCD890",
     rating: "4.9",
@@ -51,10 +52,10 @@ const drivers = [
     horarioFin: "06:00 PM",
   },
    {
-    initials: "A",
-    name: "Alirio",
+    initials: "P",
+    name: "Pinguaro",
     type: "motocarro",
-    vehicle: "MotoCarro · POL863",
+    vehicle: "MotoCarro · POL-863",
     rating: "5.0",
     zone: "Piedras Blancas",
     status: "Disponible",
@@ -66,7 +67,7 @@ const drivers = [
     initials: "H",
     name: "Hilmer",
     type: "motocarro",
-    vehicle: "MotoCarro · KIE552",
+    vehicle: "MotoCarro · KIE-552",
     rating: "5.0",
     zone: "Piedras Blancas",
     status: "Disponible",
@@ -78,7 +79,7 @@ const drivers = [
     initials: "R",
     name: "Robinson",
     type: "motocarro",
-    vehicle: "MotoCarro · DER222",
+    vehicle: "MotoCarro · DER-222",
     rating: "5.0",
     zone: "Piedras Blancas",
     status: "Disponible",
@@ -86,13 +87,53 @@ const drivers = [
     horarioInicio: "08:00 AM",
     horarioFin: "06:00 PM",
   },
+  {
+    initials: "F",
+    name: "Faver",
+    type: "motocarro",
+    vehicle: "MotoCarro · RLB-308",
+    rating: "5.0",
+    zone: "piedras Blancas",
+    status: "Disponible",
+    telefono: "+573207337492",
+    horarioInicio: "08:00 AM",
+    horarioFin: "06:00 PM",
+  },
+   {
+    initials: "M",
+    name: "Marcela",
+    type: "motocarro",
+    vehicle: "MotoCarro · HIM-000",
+    rating: "5.0",
+    zone: "piedras Blancas",
+    status: "Disponible",
+    telefono: "+573122881302",
+    horarioInicio: "08:00 AM",
+    horarioFin: "06:00 PM",
+  },
+ {
+    initials: "E",
+    name: "Elkin",
+    type: "motocarro",
+    vehicle: "MotoCarro · AGY-908",
+    rating: "5.0",
+    zone: "piedras Blancas",
+    status: "Disponible",
+    telefono: "+573117829230",
+    horarioInicio: "08:00 AM",
+    horarioFin: "06:00 PM",
+  },
+
+
+
+  //contacto de condunctores Moto/*
    {
     initials: "D",
     name: "Dario",
     type: "moto",
-    vehicle: "Moto · DER22F",
+    vehicle: "Moto · DER--22F",
     rating: "5.0",
-    zone: "7 de Agosto",
+    zone: "Santa Bárbara",
     status: "Disponible",
     telefono: "+573206271564",
     horarioInicio: "08:00 AM",
@@ -102,7 +143,7 @@ const drivers = [
     initials: "O",
     name: "Oscar",
     type: "moto",
-    vehicle: "Moto · DTI86F",
+    vehicle: "Moto · DTI-86F",
     rating: "5.0",
     zone: "Santa Bárbara",
     status: "Disponible",
@@ -110,6 +151,32 @@ const drivers = [
     horarioInicio: "08:00 AM",
     horarioFin: "06:00 PM",
   },
+ 
+  {
+    initials: "J",
+    name: "Jorge",
+    type: "moto",
+    vehicle: "Moto · ERD-20F",
+    rating: "5.0",
+    zone: "7 de Agosto",
+    status: "Disponible",
+    telefono: "+573218082794",
+    horarioInicio: "08:00 AM",
+    horarioFin: "06:00 PM",
+  },
+    {
+    initials: "Y",
+    name: "Yison",
+    type: "moto",
+    vehicle: "Moto · QBW-60D",
+    rating: "5.0",
+    zone: "7 de Agosto",
+    status: "Disponible",
+    telefono: "+573504476571",
+    horarioInicio: "08:00 AM",
+    horarioFin: "06:00 PM",
+  },
+
   
 ];
 

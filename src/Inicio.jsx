@@ -432,7 +432,7 @@ function Inicio() {
               </p>
             </div>
           </div>
-          <nav className="hidden items-center gap-3 md:flex">
+          <nav className="flex items-center gap-3">
             <a
               href="#inicio"
               className="rounded-2xl px-3 py-2 text-sm font-medium text-slate-100 transition duration-200 hover:bg-orange-500/15 hover:text-orange-100"

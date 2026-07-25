@@ -283,6 +283,7 @@ function Inicio() {
   const [formErrors, setFormErrors] = useState({});
   const [formStatus, setFormStatus] = useState(""); // "success" o "error"
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const formRef = useRef(null);
   const hasInitializedRef = useRef(false);
 
@@ -432,7 +433,7 @@ function Inicio() {
               </p>
             </div>
           </div>
-          <nav className="flex items-center gap-3">
+          <nav className="hidden items-center gap-3 md:flex">
             <a
               href="#inicio"
               className="rounded-2xl px-3 py-2 text-sm font-medium text-slate-100 transition duration-200 hover:bg-orange-500/15 hover:text-orange-100"
@@ -452,6 +453,40 @@ function Inicio() {
               Acerca De
             </a>
           </nav>
+          <button
+            type="button"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-slate-700 bg-slate-800 text-slate-100 transition hover:bg-slate-700 md:hidden"
+            aria-label="Abrir menú"
+            aria-expanded={isMobileMenuOpen}
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+          >
+            <span className="text-lg">☰</span>
+          </button>
+        </div>
+        <div className={`${isMobileMenuOpen ? "block" : "hidden"} md:hidden border-t border-slate-800/30 bg-slate-900`}> 
+          <div className="flex flex-col gap-2 px-4 py-3">
+            <a
+              href="#inicio"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="rounded-2xl px-3 py-2 text-sm font-medium text-slate-100 transition duration-200 hover:bg-orange-500/15 hover:text-orange-100"
+            >
+              Inicio
+            </a>
+            <a
+              href="#contacto"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="rounded-2xl px-3 py-2 text-sm font-medium text-slate-100 transition duration-200 hover:bg-orange-500/15 hover:text-orange-100"
+            >
+              Contacto
+            </a>
+            <a
+              href="#acerca"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="rounded-2xl px-3 py-2 text-sm font-medium text-slate-100 transition duration-200 hover:bg-orange-500/15 hover:text-orange-100"
+            >
+              Acerca De
+            </a>
+          </div>
         </div>
       </header>
 
